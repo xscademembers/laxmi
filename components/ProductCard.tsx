@@ -12,6 +12,8 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
+  const productHref = `/products/${product?.slug ?? ""}`.replace(/\/+$/, "") || "/products";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -21,7 +23,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       whileHover={{ y: -8 }}
       className="group"
     >
-      <Link href={`/products/${product.slug}`}>
+      <Link href={productHref} prefetch={true}>
         <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
           {/* Image */}
           <div className="relative bg-gray-100 overflow-hidden flex items-center justify-center aspect-[4/3]">
