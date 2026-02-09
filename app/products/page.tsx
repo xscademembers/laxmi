@@ -41,7 +41,7 @@ export default function ProductsPage() {
       </section>
 
       {/* Category Filter */}
-      <section className="py-8 bg-white border-b border-gray-200 sticky top-20 z-40">
+      <section className="py-8 bg-white border-b border-gray-200">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-4">
             {categories.map((category) => (
