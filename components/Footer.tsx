@@ -12,14 +12,14 @@ export default function Footer() {
     company: [
       { href: "/", label: "Home" },
       { href: "/about", label: "About Us" },
-      { href: "/products", label: "Products" },
+      { href: "/#products", label: "Products" },
       { href: "/contact", label: "Contact Us" },
     ],
     products: [
-      { href: "/products", label: "Trolleys" },
-      { href: "/products", label: "Water Tankers" },
-      { href: "/products", label: "Storage Tanks" },
-      { href: "/products", label: "Custom Fabrication" },
+      { href: "/#products", label: "Trolleys" },
+      { href: "/#products", label: "Water Tankers" },
+      { href: "/#products", label: "Storage Tanks" },
+      { href: "/#products", label: "Custom Fabrication" },
     ],
   };
 

@@ -26,7 +26,7 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       <Link href={productHref} prefetch={true}>
         <div className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300 h-full flex flex-col">
           {/* Image */}
-          <div className="relative bg-gray-100 overflow-hidden flex items-center justify-center aspect-[4/3]">
+          <div className="relative overflow-hidden flex items-center justify-center aspect-[4/3] p-4">
             <Image
               src={
                 product.image ||

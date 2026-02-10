@@ -56,7 +56,7 @@ const clientLogosRow2 = [
 ];
 
 export default function Home() {
-  const featuredProducts = products.slice(0, 6);
+  const featuredProducts = products;
 
   const features = [
     {
@@ -131,7 +131,7 @@ export default function Home() {
       </section>
 
       {/* Products Section */}
-      <section className="py-20 bg-gray-50">
+      <section id="products" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -148,27 +148,11 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProducts.map((product, index) => (
               <ProductCard key={product.id} product={product} index={index} />
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center"
-          >
-            <Link
-              href="/products"
-              className="inline-flex items-center gap-2 bg-primary-red text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-red/90 transition-all duration-300 hover:shadow-lg"
-            >
-              View All Products
-              <ArrowRight size={20} />
-            </Link>
-          </motion.div>
         </div>
       </section>
 

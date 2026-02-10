@@ -23,11 +23,16 @@ export default function Header() {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About Us" },
-    { href: "/products", label: "Products" },
+    { href: "/#products", label: "Products" },
     { href: "/contact", label: "Contact Us" },
   ];
 
-  const isActive = (href: string) => pathname === href;
+  const isActive = (href: string) =>
+    href === "/"
+      ? pathname === "/"
+      : href === "/#products"
+      ? pathname === "/"
+      : pathname === href;
 
   return (
     <header
@@ -66,18 +71,18 @@ export default function Header() {
 
       {/* Main Navigation */}
       <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 md:h-24">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="relative h-16 w-auto"
+              className="relative h-16 md:h-20 w-auto"
             >
               <Image
                 src="https://static.wixstatic.com/media/9356bd_c61ed5934e324ec3b0ef8856e942872f~mv2.png"
                 alt="Laxmi Engineering Equipments"
-                width={220}
-                height={64}
+                width={260}
+                height={80}
                 className="object-contain h-full w-auto"
                 priority
               />

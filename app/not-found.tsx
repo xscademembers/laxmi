@@ -37,7 +37,7 @@ export default function NotFound() {
               Go Home
             </Link>
             <Link
-              href="/products"
+              href="/#products"
               className="inline-flex items-center justify-center gap-2 bg-white text-primary-red border-2 border-primary-red px-8 py-4 rounded-lg font-semibold hover:bg-primary-red hover:text-white transition-all duration-300"
             >
               <ArrowLeft size={20} />

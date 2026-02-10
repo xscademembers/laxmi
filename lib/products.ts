@@ -8,6 +8,11 @@ export interface Product {
   useCases: string[];
   category: string;
   image?: string;
+  /**
+   * Optional gallery of additional product images.
+   * The first image should generally be the main image.
+   */
+  galleryImages?: string[];
 }
 
 export const products: Product[] = [
@@ -25,7 +30,16 @@ export const products: Product[] = [
       "General farm logistics"
     ],
     category: "Trolleys",
-    image: "https://static.wixstatic.com/media/9356bd_db47c064c99b4efdb0a13939e729f3da~mv2.png/v1/fill/w_870,h_759,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/WOR_8294.png",
+    image: "https://static.wixstatic.com/media/9356bd_db47c064c99b4efdb0a13939e729f3da~mv2.png",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_db47c064c99b4efdb0a13939e729f3da~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_b15bbb2f79cc4913b958eaa752c76907~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_01b4e42ce37c45c9935e2714fcff4769~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_f4d87054f1be4ce19e930172970e7a96~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_5c485abda2074ff383fcc8b85a56c02b~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_3197746fed0348cc9ce7bd7b4f5cff16~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_02d5e3f307a546889008642383fbfd07~mv2.png",
+    ],
   },
   {
     id: "2",
@@ -41,7 +55,15 @@ export const products: Product[] = [
       "Water supply for agricultural operations"
     ],
     category: "Water Tankers",
-    image: "https://static.wixstatic.com/media/9356bd_a792adf1c62c4e03ae8a860bd8cefeb7~mv2.png/v1/fill/w_870,h_759,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_4666(1)_HEIC.png",
+    image: "https://static.wixstatic.com/media/9356bd_426f36cf68b843e88ec1ebc9801b7f53~mv2.png",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_426f36cf68b843e88ec1ebc9801b7f53~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_8a1fc91d015140ea93b25544a0863044~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_fe42658cb2524ccbb4ce86aa4ecc659f~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_f86dbd3b2d80416c8f9bdcf968f8f72a~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_78fda198f9df4f029298840c264896b3~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_3f929c41af5e4953b365d64407969965~mv2.jpg",
+    ],
   },
   {
     id: "3",
@@ -57,7 +79,15 @@ export const products: Product[] = [
       "Construction material transport"
     ],
     category: "Trolleys",
-    image: "https://static.wixstatic.com/media/9356bd_3306a963d1e745a596e72a50a191e798~mv2.png/v1/fill/w_870,h_759,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_1154_HEIC.png",
+    image: "https://static.wixstatic.com/media/9356bd_3306a963d1e745a596e72a50a191e798~mv2.png",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_3306a963d1e745a596e72a50a191e798~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_f46f863fbdd6467aa2255977d20ed7f1~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_1c5ac97a93c244ab896f09ce59b08b64~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_011007b69edf46b0bae66b165b0ea41~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_1ce9ce71ccb449e696d6468c4f90bd1c~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_992570e1de444768bf9a28141ab5d424~mv2.png",
+    ],
   },
   {
     id: "4",
@@ -73,7 +103,13 @@ export const products: Product[] = [
       "Municipal water distribution"
     ],
     category: "Water Tankers",
-    image: "https://static.wixstatic.com/media/9356bd_500c4d2a4b474463ab8f60c1e8231f9f~mv2.png/v1/fill/w_870,h_759,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_9202_HEIC.png",
+    image: "https://static.wixstatic.com/media/9356bd_500c4d2a4b474463ab8f60c1e8231f9f~mv2.png",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_500c4d2a4b474463ab8f60c1e8231f9f~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_886f7e7292854ddf92db2bf04afe7db5~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_4dbe036702b6404889e0f6a63c64171b~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_2a68d7be3a7e49d3837dc9185781bffb~mv2.png",
+    ],
   },
   {
     id: "5",
@@ -88,7 +124,13 @@ export const products: Product[] = [
       "Light agricultural hauling"
     ],
     category: "Trolleys",
-    image: "https://static.wixstatic.com/media/9356bd_da7fe411afad421f92d3ab3578877ec8~mv2.jpg/v1/fill/w_826,h_720,al_c,q_85,enc_avif,quality_auto/5e4cfede-1f45-4c15-a9b9-f8d1ae1d2afb.jpg",
+    image: "https://static.wixstatic.com/media/9356bd_da7fe411afad421f92d3ab3578877ec8~mv2.jpg",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_da7fe411afad421f92d3ab3578877ec8~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_96967c817cf84114b7e4943b1b8ea053~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_245d02f690374478b85926cba497b402~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_b445fed2c9af498f9c761b5a5b4ce595~mv2.jpg",
+    ],
   },
   {
     id: "6",
@@ -104,7 +146,13 @@ export const products: Product[] = [
       "Agricultural equipment transport"
     ],
     category: "Trailers",
-    image: "https://static.wixstatic.com/media/9356bd_9ae10e617ff249768bbfb0fe337b6361~mv2.png/v1/fill/w_870,h_759,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_1077_HEIC.png",
+    image: "https://static.wixstatic.com/media/9356bd_9ae10e617ff249768bbfb0fe337b6361~mv2.png",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_9ae10e617ff249768bbfb0fe337b6361~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_ea9b6fe768864dc09e59ac0ae66c2263~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_9c9f47f0c62845b5aeed7c11bb3772ef~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_78c36751660045a9a8020d7af61918b4~mv2.png",
+    ],
   },
   {
     id: "7",
@@ -120,7 +168,14 @@ export const products: Product[] = [
       "Emergency water distribution"
     ],
     category: "Water Tankers",
-    image: "https://static.wixstatic.com/media/9356bd_ec29e875020a4de785cfab5bccb94d9c~mv2.png/v1/fill/w_870,h_829,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_1641_HEIC.png",
+    image: "https://static.wixstatic.com/media/9356bd_ec29e875020a4de785cfab5bccb94d9c~mv2.png",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_ec29e875020a4de785cfab5bccb94d9c~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_0344110779e9470f8d85be2904ed9aed~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_b7d1629478a84ae19a58510148a44f31~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_3aa7b37beeb142d490edd44c97e48e65~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_ff95da1455f5475d854dfba8676960c8~mv2.jpg",
+    ],
   },
   {
     id: "8",
@@ -136,7 +191,15 @@ export const products: Product[] = [
       "Industrial material storage"
     ],
     category: "Storage Tanks",
-    image: "https://static.wixstatic.com/media/9356bd_28cf5bb4ee894f2a91b33b80bbeabf99~mv2.jpg/v1/fill/w_660,h_576,al_c,q_85,enc_avif,quality_auto/6df4ce88-730b-46bf-bd92-fdb82d0a648b.jpg",
+    image: "https://static.wixstatic.com/media/9356bd_28cf5bb4ee894f2a91b33b80bbeabf99~mv2.jpg",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_28cf5bb4ee894f2a91b33b80bbeabf99~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_7d04483f10d24e829aa536aea50202a9~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_a12e319abfe64508a238fbdf589147df~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_0eedbac61cc2431b8bb6e4e105a579a7~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_b5ce2e30dcc74b22a1655bea327396bf~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_70ca8b1e2b064c00a237666ce03fe99f~mv2.jpg",
+    ],
   },
   {
     id: "9",
@@ -152,7 +215,13 @@ export const products: Product[] = [
       "Infrastructure projects"
     ],
     category: "Storage Tanks",
-    image: "https://static.wixstatic.com/media/9356bd_77b3294aa0154cf3ba979215cf4023fd~mv2.png/v1/fill/w_870,h_759,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_2530_HEIC.png",
+    image: "https://static.wixstatic.com/media/9356bd_77b3294aa0154cf3ba979215cf4023fd~mv2.png",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_77b3294aa0154cf3ba979215cf4023fd~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_df387ba5be4543dd8ac427aa00cb1f24~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_c94d338eebfb4a9ea10af81635ed6211~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_d92b2bb597cd40c394a8bb2a44cdefaf~mv2.png",
+    ],
   },
   {
     id: "10",
@@ -168,7 +237,13 @@ export const products: Product[] = [
       "Industrial material storage"
     ],
     category: "Storage Tanks",
-    image: "https://static.wixstatic.com/media/9356bd_aea778cc22104b58adf37068e2c546be~mv2.jpg/v1/fill/w_870,h_759,al_c,q_85,enc_avif,quality_auto/64B18DFC-9D41-43DD-8952-6F28C125FADB.jpg",
+    image: "https://static.wixstatic.com/media/9356bd_aea778cc22104b58adf37068e2c546be~mv2.jpg",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_aea778cc22104b58adf37068e2c546be~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_53b929d1bf5242419cebf6c7c71b0a6b~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_8ffefbdacd0f49528bb4984be34dcd19~mv2.jpg",
+      "https://static.wixstatic.com/media/9356bd_f2c94ce253124eb5a4b33c58ec7c0fad~mv2.jpg",
+    ],
   },
   {
     id: "11",
@@ -184,7 +259,14 @@ export const products: Product[] = [
       "Custom engineering projects"
     ],
     category: "Fabrication",
-    image: "https://static.wixstatic.com/media/9356bd_50fe52b8b8384173a8b0c02dc0d3c390~mv2.png/v1/fill/w_564,h_492,al_c,lg_1,q_85,enc_avif,quality_auto/casing1.png",
+    image: "https://static.wixstatic.com/media/9356bd_50fe52b8b8384173a8b0c02dc0d3c390~mv2.png",
+    galleryImages: [
+      "https://static.wixstatic.com/media/9356bd_50fe52b8b8384173a8b0c02dc0d3c390~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_1489759391dc4a23877f2dc32b12a23c~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_3b9c82187ba44db9b8abcb80c80ad28b~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_cbaba6f33fa743ff9911d21c1e27dd62~mv2.png",
+      "https://static.wixstatic.com/media/9356bd_b6ace0129879445ebf008c8dca601f93~mv2.png",
+    ],
   },
 ];
 

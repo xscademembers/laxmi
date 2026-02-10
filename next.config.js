@@ -25,7 +25,6 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
-  swcMinify: true,
   productionBrowserSourceMaps: false,
   // Optimize for production
   compiler: {

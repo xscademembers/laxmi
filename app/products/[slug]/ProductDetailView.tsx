@@ -1,9 +1,17 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, CheckCircle, Phone, Mail } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle,
+  Phone,
+  Mail,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { getProductBySlug, products } from "@/lib/products";
 
 type SpecRow = {
@@ -268,12 +276,58 @@ interface ProductDetailViewProps {
 
 export default function ProductDetailView({ slug }: ProductDetailViewProps) {
   const product = getProductBySlug(slug);
+  const galleryImages =
+    product?.galleryImages && product.galleryImages.length > 0
+      ? product.galleryImages
+      : product?.image
+      ? [product.image]
+      : [];
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const showPreviousImage = () => {
+    if (!galleryImages.length) return;
+    setActiveImageIndex((current) =>
+      current === 0 ? galleryImages.length - 1 : current - 1
+    );
+  };
+
+  const showNextImage = () => {
+    if (!galleryImages.length) return;
+    setActiveImageIndex((current) =>
+      current === galleryImages.length - 1 ? 0 : current + 1
+    );
+  };
+
+  // Auto-rotate images, respecting prefers-reduced-motion
+  useEffect(() => {
+    if (galleryImages.length <= 1) return;
+
+    if (typeof window !== "undefined") {
+      const mediaQuery = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+      if (mediaQuery.matches) {
+        return;
+      }
+    }
+
+    const interval = setInterval(() => {
+      setActiveImageIndex((current) =>
+        current === galleryImages.length - 1 ? 0 : current + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [galleryImages.length]);
 
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center pt-20">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-primary-black mb-4">
+      <main className="min-h-screen flex items-center justify-center pt-20">
+        <section className="text-center" aria-labelledby="product-not-found">
+          <h1
+            id="product-not-found"
+            className="text-4xl font-bold text-primary-black mb-4"
+          >
             Product Not Found
           </h1>
           <Link
@@ -283,8 +337,8 @@ export default function ProductDetailView({ slug }: ProductDetailViewProps) {
             <ArrowLeft size={20} />
             <span>Back to Products</span>
           </Link>
-        </div>
-      </div>
+        </section>
+      </main>
     );
   }
 
@@ -293,7 +347,10 @@ export default function ProductDetailView({ slug }: ProductDetailViewProps) {
       {/* Breadcrumb */}
       <section className="py-6 bg-white border-b border-gray-200">
         <div className="container mx-auto px-4">
-          <div className="flex items-center gap-2 text-sm font-medium text-gray-700 uppercase tracking-wide">
+          <nav
+            className="flex items-center gap-2 text-sm font-medium text-gray-700 uppercase tracking-wide"
+            aria-label="Breadcrumb"
+          >
             <Link
               href="/"
               className="hover:text-primary-red transition-colors"
@@ -302,7 +359,7 @@ export default function ProductDetailView({ slug }: ProductDetailViewProps) {
             </Link>
             <span className="text-gray-400">/</span>
             <Link
-              href="/products"
+              href="/#products"
               className="hover:text-primary-red transition-colors"
             >
               PRODUCTS
@@ -311,7 +368,7 @@ export default function ProductDetailView({ slug }: ProductDetailViewProps) {
             <span className="text-primary-black">
               {product.name.toUpperCase()}
             </span>
-          </div>
+          </nav>
         </div>
       </section>
 
@@ -319,206 +376,268 @@ export default function ProductDetailView({ slug }: ProductDetailViewProps) {
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
           <Link
-            href="/products"
+            href="/#products"
             className="inline-flex items-center gap-2 text-primary-red hover:text-primary-red/80 mb-8 transition-colors"
           >
             <ArrowLeft size={20} />
             <span>Back to Products</span>
           </Link>
 
-          <div className="flex flex-col gap-10 lg:gap-12">
-            {/* Image */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="relative w-full max-w-4xl mx-auto aspect-[4/3] rounded-lg overflow-hidden shadow-xl bg-gray-100"
-            >
-              <Image
-                src={
-                  product.image ||
-                  `https://via.placeholder.com/800x600/DC2626/FFFFFF?text=${encodeURIComponent(
-                    product.name
-                  )}`
-                }
-                alt={product.name}
-                fill
-                className="object-cover"
-                priority
-              />
-            </motion.div>
+          <article className="grid gap-10 lg:gap-16 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] items-start">
+            {/* Image gallery */}
+            <section aria-label={`${product.name} images`} className="space-y-4">
+              <motion.figure
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                className="relative w-full rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden"
+              >
+                <div className="relative w-full aspect-[4/3] flex items-center justify-center">
+                  <Image
+                    src={
+                      galleryImages[activeImageIndex] ||
+                      product.image ||
+                      `https://via.placeholder.com/800x600/DC2626/FFFFFF?text=${encodeURIComponent(
+                        product.name
+                      )}`
+                    }
+                    alt={product.name}
+                    fill
+                    className="object-contain"
+                    sizes="(max-width: 768px) 100vw, 640px"
+                    priority
+                  />
+                </div>
+
+                {galleryImages.length > 1 && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={showPreviousImage}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-full bg-primary-red text-white shadow-lg w-11 h-11 md:w-12 md:h-12 hover:bg-primary-red/90 transition-colors"
+                      aria-label="Previous product image"
+                    >
+                      <ChevronLeft size={22} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={showNextImage}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 inline-flex items-center justify-center rounded-full bg-primary-red text-white shadow-lg w-11 h-11 md:w-12 md:h-12 hover:bg-primary-red/90 transition-colors"
+                      aria-label="Next product image"
+                    >
+                      <ChevronRight size={22} />
+                    </button>
+                  </>
+                )}
+              </motion.figure>
+
+              {galleryImages.length > 1 && (
+                <div className="flex gap-3 overflow-x-auto pb-1" aria-label="Product image thumbnails">
+                  {galleryImages.map((src, index) => (
+                    <button
+                      key={src}
+                      type="button"
+                      onClick={() => setActiveImageIndex(index)}
+                      className={`relative flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-xl border bg-white transition-colors ${
+                        index === activeImageIndex
+                          ? "border-primary-red shadow-sm"
+                          : "border-gray-200 hover:border-primary-red/70"
+                      }`}
+                      aria-label={`View image ${index + 1} for ${product.name}`}
+                    >
+                      <div className="relative w-full h-full flex items-center justify-center">
+                        <Image
+                          src={src}
+                          alt={`${product.name} ${index + 1}`}
+                          fill
+                          className="object-contain"
+                          sizes="96px"
+                        />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </section>
 
             {/* Content */}
-            <motion.div
+            <motion.section
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="space-y-6"
+              className="space-y-8"
             >
-              <div>
-                <span className="inline-block bg-primary-red/10 text-primary-red px-4 py-1 rounded-full text-sm font-semibold mb-4">
+              <header className="space-y-4">
+                <span className="inline-block bg-primary-red/10 text-primary-red px-4 py-1 rounded-full text-sm font-semibold">
                   {product.category}
                 </span>
-                <h1 className="text-4xl font-bold text-primary-black mb-4">
-                  {product.name}
-                </h1>
-                {product.capacity && (
-                  <p className="text-2xl text-primary-red font-semibold mb-6">
-                    Capacity: {product.capacity}
-                  </p>
-                )}
-                <p className="text-gray-700 text-lg leading-relaxed">
+                <div>
+                  <h1 className="text-3xl md:text-4xl font-bold text-primary-black mb-2">
+                    {product.name}
+                  </h1>
+                  {product.capacity && (
+                    <p className="text-xl md:text-2xl text-primary-red font-semibold">
+                      Capacity: {product.capacity}
+                    </p>
+                  )}
+                </div>
+                <p className="text-gray-700 text-base md:text-lg leading-relaxed">
                   {product.description}
                 </p>
-              </div>
+              </header>
 
-              {/* Specifications table (from provided images) */}
-              {specTables[product.slug] && (
-                <div className="mt-4">
-                  <h3 className="text-xl font-semibold text-primary-black mb-4">
-                    Technical Specifications
-                  </h3>
-                  <div className="overflow-x-auto">
-                    <table className="w-full border border-gray-200 text-sm md:text-base">
-                      <thead className="bg-gray-100">
-                        <tr>
-                          {specTables[product.slug].columns.map((col) => (
-                            <th
-                              key={col}
-                              scope="col"
-                              className="px-4 py-3 text-left font-semibold text-primary-black border-b border-gray-200"
-                            >
-                              {col}
-                            </th>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {specTables[product.slug].rows.map((row) => (
-                          <tr
-                            key={row.label}
-                            className="odd:bg-white even:bg-gray-50 align-middle"
-                          >
-                            <th
-                              scope="row"
-                              className="px-4 py-3 font-medium text-primary-black text-left border-t border-gray-200 align-middle"
-                            >
-                              {row.label}
-                            </th>
-                            {row.values.map((value, idx) => (
-                              <td
-                                key={idx}
-                                className="px-4 py-3 text-gray-700 text-left border-t border-gray-200 align-middle"
-                              >
-                                {value || "—"}
-                              </td>
-                            ))}
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+              <section aria-label="Key applications" className="space-y-3">
+                <h2 className="text-lg font-semibold text-primary-black">
+                  Key Applications
+                </h2>
+                <ul className="space-y-2">
+                  {product.useCases.map((useCase, index) => (
+                    <motion.li
+                      key={useCase}
+                      initial={{ opacity: 0, x: -8 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        duration: 0.25,
+                        delay: 0.15 + index * 0.04,
+                      }}
+                      className="flex items-start gap-3"
+                    >
+                      <CheckCircle
+                        className="text-primary-red mt-0.5 flex-shrink-0"
+                        size={18}
+                      />
+                      <span className="text-gray-700 text-sm md:text-base">
+                        {useCase}
+                      </span>
+                    </motion.li>
+                  ))}
+                </ul>
+              </section>
+
+              {/* Variants for products without spec table */}
+              {!specTables[product.slug] && product.variants && product.variants.length > 0 && (
+                <section aria-label="Available variants" className="space-y-3">
+                  <h2 className="text-lg font-semibold text-primary-black">
+                    Available Variants
+                  </h2>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {product.variants.map((variant, index) => (
+                      <motion.div
+                        key={variant}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.25,
+                          delay: 0.2 + index * 0.05,
+                        }}
+                        className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg"
+                      >
+                        <CheckCircle
+                          className="text-primary-red"
+                          size={18}
+                        />
+                        <span className="text-gray-700 text-sm md:text-base">
+                          {variant}
+                        </span>
+                      </motion.div>
+                    ))}
                   </div>
-                </div>
-              )}
-
-              {/* Fallback (for products without a specs image, e.g. Polymer Storage Tank) */}
-              {!specTables[product.slug] && (
-                <>
-                  {product.variants && product.variants.length > 0 && (
-                    <div>
-                      <h3 className="text-xl font-semibold text-primary-black mb-4">
-                        Available Variants
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {product.variants.map((variant, index) => (
-                          <motion.div
-                            key={variant}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{
-                              duration: 0.3,
-                              delay: 0.3 + index * 0.05,
-                            }}
-                            className="flex items-center gap-2 bg-gray-50 p-3 rounded-lg"
-                          >
-                            <CheckCircle
-                              className="text-primary-red"
-                              size={20}
-                            />
-                            <span className="text-gray-700">{variant}</span>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div>
-                    <h3 className="text-xl font-semibold text-primary-black mb-4">
-                      Use Cases
-                    </h3>
-                    <ul className="space-y-3">
-                      {product.useCases.map((useCase, index) => (
-                        <motion.li
-                          key={useCase}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{
-                            duration: 0.3,
-                            delay: 0.4 + index * 0.05,
-                          }}
-                          className="flex items-start gap-3"
-                        >
-                          <CheckCircle
-                            className="text-primary-red mt-0.5 flex-shrink-0"
-                            size={20}
-                          />
-                          <span className="text-gray-700">{useCase}</span>
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
-                </>
+                </section>
               )}
 
               {/* CTA */}
-              <div className="pt-6 border-t border-gray-200">
-                <p className="text-gray-600 mb-4">
-                  Interested in this product? Contact us for pricing and
-                  availability.
+              <section
+                aria-label="Contact for pricing and availability"
+                className="pt-4 border-t border-gray-200 space-y-3"
+              >
+                <p className="text-gray-600 text-sm md:text-base">
+                  Interested in this product? Contact us for pricing and availability.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <Link
                     href="/contact"
-                    className="inline-flex items-center justify-center gap-2 bg-primary-red text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-red/90 transition-all duration-300 hover:shadow-lg"
+                    className="inline-flex items-center justify-center gap-2 bg-primary-red text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-red/90 transition-all duration-300 hover:shadow-lg"
                   >
                     <Mail size={20} />
                     Request Quote
                   </Link>
                   <a
                     href="tel:+919822221937"
-                    className="inline-flex items-center justify-center gap-2 bg-white text-primary-red border-2 border-primary-red px-8 py-4 rounded-lg font-semibold hover:bg-primary-red hover:text-white transition-all duration-300"
+                    className="inline-flex items-center justify-center gap-2 bg-white text-primary-red border-2 border-primary-red px-8 py-3 rounded-lg font-semibold hover:bg-primary-red hover:text-white transition-all duration-300"
                   >
                     <Phone size={20} />
                     Call Now
                   </a>
                 </div>
+              </section>
+            </motion.section>
+          </article>
+
+          {/* Full-width technical specifications below the gallery + content */}
+          {specTables[product.slug] && (
+            <section
+              aria-label="Technical specifications"
+              className="mt-10 space-y-4"
+            >
+              <h2 className="text-xl md:text-2xl font-semibold text-primary-black">
+                Technical Specifications
+              </h2>
+              <div className="overflow-x-auto border border-gray-200 rounded-xl">
+                <table className="w-full text-sm md:text-base border-collapse">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      {specTables[product.slug].columns.map((col) => (
+                        <th
+                          key={col}
+                          scope="col"
+                          className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200"
+                        >
+                          {col}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {specTables[product.slug].rows.map((row) => (
+                      <tr
+                        key={row.label}
+                        className="odd:bg-white even:bg-gray-50 align-middle"
+                      >
+                        <th
+                          scope="row"
+                          className="px-4 py-3 font-medium text-primary-black text-left border border-gray-200 align-middle"
+                        >
+                          {row.label}
+                        </th>
+                        {row.values.map((value, idx) => (
+                          <td
+                            key={idx}
+                            className="px-4 py-3 text-gray-700 text-left border border-gray-200 align-middle"
+                          >
+                            {value || "—"}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            </motion.div>
-          </div>
+            </section>
+          )}
         </div>
       </section>
 
       {/* Related Products */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+            className="text-center mb-10"
           >
-            <h2 className="text-4xl font-bold text-primary-black mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-primary-black mb-3">
               Related Products
             </h2>
           </motion.div>
@@ -537,7 +656,7 @@ export default function ProductDetailView({ slug }: ProductDetailViewProps) {
                   className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-xl transition-all duration-300 h-full flex flex-col"
                 >
                   <Link href={`/products/${relatedProduct.slug}`}>
-                    <div className="relative bg-gray-100 overflow-hidden flex items-center justify-center aspect-[4/3]">
+                    <div className="relative overflow-hidden flex items-center justify-center aspect-[4/3] p-4">
                       <Image
                         src={
                           relatedProduct.image ||
