@@ -154,7 +154,7 @@ export default function AdminPage() {
                   </th>
                   <th
                     scope="col"
-                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[14%]"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[18%]"
                   >
                     Email
                   </th>
@@ -172,7 +172,7 @@ export default function AdminPage() {
                   </th>
                   <th
                     scope="col"
-                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[27%]"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[23%]"
                   >
                     Message
                   </th>
@@ -196,14 +196,17 @@ export default function AdminPage() {
                     <td className="px-2 py-3 text-primary-black border border-gray-200 break-words">
                       <span className="font-medium">{row.name}</span>
                     </td>
-                    <td className="px-2 py-3 text-gray-700 border border-gray-200 break-words">
+                    <td className="px-2 py-3 text-gray-700 border border-gray-200 align-middle">
                       {row.email ? (
                         <a
                           href={`mailto:${row.email}`}
-                          className="text-primary-red hover:underline inline-flex items-center gap-1 break-all"
+                          title={row.email}
+                          className="text-primary-red hover:underline inline-flex items-center gap-1 min-w-0 max-w-full"
                         >
                           <Mail size={14} className="flex-shrink-0" />
-                          <span className="min-w-0">{row.email}</span>
+                          <span className="truncate block min-w-0" title={row.email}>
+                            {row.email}
+                          </span>
                         </a>
                       ) : (
                         "—"
