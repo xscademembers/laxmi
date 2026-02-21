@@ -224,7 +224,7 @@ export default function AdminPage() {
                         )}
                       </td>
                       <td className="px-4 py-3 text-gray-700 border border-gray-200">
-                        {subjectLabels[row.subject] ?? row.subject || "—"}
+                        {subjectLabels[row.subject] ?? (row.subject || "—")}
                       </td>
                       <td className="px-4 py-3 text-gray-700 border border-gray-200 max-w-xs">
                         <span className="line-clamp-3" title={row.message}>
