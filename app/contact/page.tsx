@@ -63,7 +63,8 @@ export default function ContactPage() {
     const { name, value } = e.target;
     if (name === "phone") {
       const digits = value.replace(/\D/g, "");
-      const limited = digits.slice(0, 10);
+      const withoutCountryCode = digits.startsWith("91") ? digits.slice(2) : digits;
+      const limited = withoutCountryCode.slice(0, 10);
       setFormData({
         ...formData,
         phone: limited.length > 0 ? `+91 ${limited}` : "+91 ",
