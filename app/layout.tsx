@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
+import SiteChrome from "@/components/SiteChrome";
 
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com';
 
@@ -82,10 +80,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="smooth-scroll">
       <body>
-        <Header />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
-        <WhatsAppFloatingButton />
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );

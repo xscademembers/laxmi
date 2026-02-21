@@ -13,35 +13,47 @@ export default function ContactPage() {
     message: "",
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+    setSubmitError(null);
+    setIsSubmitting(true);
+
     try {
-      // TODO: Replace with your form submission endpoint
-      // Example: await fetch('/api/contact', { method: 'POST', body: JSON.stringify(formData) });
-      
-      // For now, simulate form submission
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setSubmitError(data.error || "Something went wrong. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
       setIsSubmitted(true);
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
       setTimeout(() => {
         setIsSubmitted(false);
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          subject: "",
-          message: "",
-        });
       }, 3000);
     } catch (error) {
-      // Handle error silently in production
-      if (process.env.NODE_ENV === 'development') {
-        console.error('Form submission error:', error);
+      if (process.env.NODE_ENV === "development") {
+        console.error("Form submission error:", error);
       }
-      setIsSubmitted(true);
-      setTimeout(() => {
-        setIsSubmitted(false);
-      }, 3000);
+      setSubmitError("Failed to send. Please try again or contact us by phone.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -176,6 +188,14 @@ export default function ContactPage() {
                   </motion.div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    {submitError && (
+                      <div
+                        className="px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm"
+                        role="alert"
+                      >
+                        {submitError}
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label
@@ -276,10 +296,17 @@ export default function ContactPage() {
 
                     <button
                       type="submit"
-                      className="w-full bg-primary-red text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-red/90 transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="w-full bg-primary-red text-white px-8 py-4 rounded-lg font-semibold hover:bg-primary-red/90 transition-all duration-300 hover:shadow-lg flex items-center justify-center gap-2 disabled:opacity-70 disabled:pointer-events-none"
                     >
-                      <Send size={20} />
-                      Send Message
+                      {isSubmitting ? (
+                        "Sending…"
+                      ) : (
+                        <>
+                          <Send size={20} />
+                          Send Message
+                        </>
+                      )}
                     </button>
                   </form>
                 )}
