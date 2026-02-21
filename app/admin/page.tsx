@@ -137,106 +137,104 @@ export default function AdminPage() {
             animate={{ opacity: 1, y: 0 }}
             className="rounded-xl bg-white border border-gray-200 shadow-sm overflow-hidden"
           >
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm md:text-base border-collapse">
-                <thead>
-                  <tr className="bg-gray-50 border-b border-gray-200">
-                    <th
-                      scope="col"
-                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 w-16"
-                    >
-                      #
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 min-w-[120px]"
-                    >
-                      Name
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 min-w-[160px]"
-                    >
-                      Email
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 min-w-[120px]"
-                    >
-                      Phone
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 min-w-[120px]"
-                    >
-                      Subject
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 min-w-[200px] w-[30%]"
-                    >
-                      Message
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 min-w-[140px]"
-                    >
-                      Date
-                    </th>
+            <table className="w-full text-sm md:text-base border-collapse table-fixed">
+              <thead>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th
+                    scope="col"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[4%]"
+                  >
+                    #
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[12%]"
+                  >
+                    Name
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[14%]"
+                  >
+                    Email
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[12%]"
+                  >
+                    Phone
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[11%]"
+                  >
+                    Subject
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[27%]"
+                  >
+                    Message
+                  </th>
+                  <th
+                    scope="col"
+                    className="px-2 py-3 text-left font-semibold text-primary-black border border-gray-200 w-[20%]"
+                  >
+                    Date
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {submissions.map((row, index) => (
+                  <tr
+                    key={row._id}
+                    className="odd:bg-white even:bg-gray-50/50 align-top"
+                  >
+                    <td className="px-2 py-3 font-medium text-gray-600 border border-gray-200">
+                      {index + 1}
+                    </td>
+                    <td className="px-2 py-3 text-primary-black border border-gray-200 break-words">
+                      <span className="font-medium">{row.name}</span>
+                    </td>
+                    <td className="px-2 py-3 text-gray-700 border border-gray-200 break-words">
+                      {row.email ? (
+                        <a
+                          href={`mailto:${row.email}`}
+                          className="text-primary-red hover:underline inline-flex items-center gap-1 break-all"
+                        >
+                          <Mail size={14} className="flex-shrink-0" />
+                          <span className="min-w-0">{row.email}</span>
+                        </a>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+                    <td className="px-2 py-3 text-gray-700 border border-gray-200 break-words">
+                      {row.phone ? (
+                        <a
+                          href={`tel:${row.phone.replace(/\s/g, "")}`}
+                          className="text-primary-red hover:underline inline-flex items-center gap-1"
+                        >
+                          <Phone size={14} className="flex-shrink-0" />
+                          {row.phone}
+                        </a>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
+                    <td className="px-2 py-3 text-gray-700 border border-gray-200 break-words">
+                      {subjectLabels[row.subject] ?? (row.subject || "—")}
+                    </td>
+                    <td className="px-2 py-3 text-gray-700 border border-gray-200 align-top whitespace-pre-wrap break-words min-w-0">
+                      {row.message || "—"}
+                    </td>
+                    <td className="px-2 py-3 text-gray-600 border border-gray-200 whitespace-nowrap">
+                      {formatDate(row.createdAt)}
+                    </td>
                   </tr>
-                </thead>
-                <tbody>
-                  {submissions.map((row, index) => (
-                    <tr
-                      key={row._id}
-                      className="odd:bg-white even:bg-gray-50/50 align-top"
-                    >
-                      <td className="px-4 py-3 font-medium text-gray-600 border border-gray-200">
-                        {index + 1}
-                      </td>
-                      <td className="px-4 py-3 text-primary-black border border-gray-200">
-                        <span className="font-medium">{row.name}</span>
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 border border-gray-200">
-                        {row.email ? (
-                          <a
-                            href={`mailto:${row.email}`}
-                            className="text-primary-red hover:underline flex items-center gap-1"
-                          >
-                            <Mail size={14} />
-                            {row.email}
-                          </a>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 border border-gray-200">
-                        {row.phone ? (
-                          <a
-                            href={`tel:${row.phone.replace(/\s/g, "")}`}
-                            className="text-primary-red hover:underline flex items-center gap-1"
-                          >
-                            <Phone size={14} />
-                            {row.phone}
-                          </a>
-                        ) : (
-                          "—"
-                        )}
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 border border-gray-200">
-                        {subjectLabels[row.subject] ?? (row.subject || "—")}
-                      </td>
-                      <td className="px-4 py-3 text-gray-700 border border-gray-200 align-top whitespace-pre-wrap break-words">
-                        {row.message || "—"}
-                      </td>
-                      <td className="px-4 py-3 text-gray-600 border border-gray-200 whitespace-nowrap">
-                        {formatDate(row.createdAt)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </motion.div>
         )}
 
