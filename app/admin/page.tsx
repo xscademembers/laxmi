@@ -84,9 +84,6 @@ export default function AdminPage() {
               <h1 className="text-2xl font-bold text-primary-black">
                 Contact Submissions
               </h1>
-              <p className="text-sm text-gray-600">
-                {submissions.length} submission{submissions.length !== 1 ? "s" : ""} in MongoDB
-              </p>
             </div>
           </div>
           <button
