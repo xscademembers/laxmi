@@ -8,7 +8,7 @@ export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    phone: "+91 ",
     subject: "",
     message: "",
   });
@@ -40,7 +40,7 @@ export default function ContactPage() {
       setFormData({
         name: "",
         email: "",
-        phone: "",
+        phone: "+91 ",
         subject: "",
         message: "",
       });
@@ -60,9 +60,19 @@ export default function ContactPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
+    const { name, value } = e.target;
+    if (name === "phone") {
+      const digits = value.replace(/\D/g, "");
+      const limited = digits.slice(0, 10);
+      setFormData({
+        ...formData,
+        phone: limited.length > 0 ? `+91 ${limited}` : "+91 ",
+      });
+      return;
+    }
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
@@ -220,12 +230,13 @@ export default function ContactPage() {
                           htmlFor="email"
                           className="block text-sm font-medium text-gray-700 mb-2"
                         >
-                          Email
+                          Email *
                         </label>
                         <input
                           type="email"
                           id="email"
                           name="email"
+                          required
                           value={formData.email}
                           onChange={handleChange}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-red focus:border-transparent outline-none transition-all"
@@ -250,7 +261,11 @@ export default function ContactPage() {
                           value={formData.phone}
                           onChange={handleChange}
                           className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-red focus:border-transparent outline-none transition-all"
-                          placeholder="+91 98222 21937"
+                          placeholder="98222 21937"
+                          minLength={14}
+                          maxLength={14}
+                          inputMode="numeric"
+                          autoComplete="tel"
                         />
                       </div>
                       <div>

@@ -70,7 +70,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 pt-8 pb-16">
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8">
         <motion.header
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -173,7 +173,7 @@ export default function AdminPage() {
                     </th>
                     <th
                       scope="col"
-                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 min-w-[200px]"
+                      className="px-4 py-3 text-left font-semibold text-primary-black border border-gray-200 min-w-[200px] w-[30%]"
                     >
                       Message
                     </th>
@@ -226,10 +226,8 @@ export default function AdminPage() {
                       <td className="px-4 py-3 text-gray-700 border border-gray-200">
                         {subjectLabels[row.subject] ?? (row.subject || "—")}
                       </td>
-                      <td className="px-4 py-3 text-gray-700 border border-gray-200 max-w-xs">
-                        <span className="line-clamp-3" title={row.message}>
-                          {row.message || "—"}
-                        </span>
+                      <td className="px-4 py-3 text-gray-700 border border-gray-200 align-top whitespace-pre-wrap break-words">
+                        {row.message || "—"}
                       </td>
                       <td className="px-4 py-3 text-gray-600 border border-gray-200 whitespace-nowrap">
                         {formatDate(row.createdAt)}

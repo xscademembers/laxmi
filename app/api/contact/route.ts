@@ -12,16 +12,23 @@ export type ContactBody = {
 };
 
 function validate(body: unknown): body is ContactBody {
-  return (
-    typeof body === "object" &&
-    body !== null &&
-    "name" in body &&
-    typeof (body as ContactBody).name === "string" &&
-    (body as ContactBody).name.trim().length > 0 &&
-    "phone" in body &&
-    typeof (body as ContactBody).phone === "string" &&
-    (body as ContactBody).phone.trim().length > 0
-  );
+  if (
+    typeof body !== "object" ||
+    body === null ||
+    !("name" in body) ||
+    typeof (body as ContactBody).name !== "string" ||
+    (body as ContactBody).name.trim().length === 0 ||
+    !("email" in body) ||
+    typeof (body as ContactBody).email !== "string" ||
+    (body as ContactBody).email.trim().length === 0 ||
+    !("phone" in body) ||
+    typeof (body as ContactBody).phone !== "string"
+  ) {
+    return false;
+  }
+  const phone = (body as ContactBody).phone.trim();
+  const phoneDigits = phone.replace(/\D/g, "");
+  return phoneDigits.length >= 10 && /^\d+$/.test(phoneDigits);
 }
 
 /** Normalize phone to digits only for duplicate check */
@@ -54,7 +61,10 @@ export async function POST(request: Request) {
 
   if (!validate(body)) {
     return NextResponse.json(
-      { error: "Missing or invalid fields: name and phone are required." },
+      {
+        error:
+          "Name, email and phone are required. Phone must be numbers only (e.g. +91 9822221937).",
+      },
       { status: 400 }
     );
   }
